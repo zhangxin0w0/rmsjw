@@ -43,12 +43,13 @@ public class UserServlet extends HttpServlet {
 
 
     //管理员登录
-    private void login(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    private void login(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         ResponseCode<Users> login = userService.login(username, password);
-        response.getWriter().write(login.toString());
+        request.setAttribute("user",login);
+        request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request,response);
     }
     //获取管理员信息
     private void getMsg(HttpServletRequest request,HttpServletResponse response){
