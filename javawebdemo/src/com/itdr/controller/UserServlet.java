@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -19,7 +20,7 @@ import java.io.IOException;
  * @author Air张
  * @since JDK 1.8
  */
-@WebServlet("/user/*")
+@WebServlet("/backed/user/*")
 public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request,response);
@@ -48,7 +49,12 @@ public class UserServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         ResponseCode<Users> login = userService.login(username, password);
-        request.setAttribute("user",login);
+
+        //登录成功，保存用户信息
+        HttpSession session = request.getSession();
+        Users data = login.getData();
+        session.setAttribute("us",data);
+
         request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request,response);
     }
     //获取管理员信息

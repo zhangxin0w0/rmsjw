@@ -18,7 +18,7 @@ import java.io.IOException;
  * @author Air张
  * @since JDK 1.8
  */
-@WebServlet("/product/*")
+@WebServlet("/backed/product/*")
 public class ProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request,response);
@@ -34,6 +34,9 @@ public class ProductServlet extends HttpServlet {
             case "getall":
                 getAllProduct(request,response);
                 break;
+            case "totype":
+                toType(request,response);
+                break;
 
         }
     }
@@ -44,6 +47,14 @@ public class ProductServlet extends HttpServlet {
         ResponseCode allProduct = productService.getAllProduct();
         request.setAttribute("plist",allProduct);
         request.getRequestDispatcher("/WEB-INF/plist.jsp").forward(request,response);
+    }
+
+    //商品下架
+    private void toType(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException {
+        String id = request.getParameter("id");
+        ResponseCode allProduct = productService.toType(id);
+        //把数据转成json格式返回
+        response.getWriter().write(allProduct.getData().toString());
     }
 
 }

@@ -11,7 +11,7 @@
     <title>管理员登录</title>
 </head>
 <body>
-<form action="/user/login" method="post">
+<form action="/backed/user/login" method="post">
     <input type="text" placeholder="账户" name="username">
     <input type="password" placeholder="密码" name="password">
     <input type="submit" value="登录">
