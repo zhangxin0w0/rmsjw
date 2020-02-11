@@ -21,19 +21,21 @@ public class FullFilter implements Filter {
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        //乱码处理
+        //请求乱码处理
         request.setCharacterEncoding("utf-8");
+        //响应乱码处理
         response.setContentType("text/html;charset=utf-8");
 
-        //管理员权限校验
+        //获取请求路径
         String requestURI = ((HttpServletRequest) request).getRequestURI();
+        //切割成字符串数组，获取最后一个值
         String[] split = requestURI.split("/");
-
+        //判断路径
         if("login".equals(split[split.length-1])){
-            //登录页面直接放行
+            //登录请求直接放行
             chain.doFilter(request, response);
         }else{
-            //其它请求都需要验证管理员权限以及是否登录，定位到一个页面
+            //其它请求都需要验证管理员权限以及是否登录，错误情况定位到错误页面
             HttpSession session = ((HttpServletRequest) request).getSession();
             Users us = (Users)session.getAttribute("us");
             if(us == null || us.getType() != 1){
@@ -42,10 +44,6 @@ public class FullFilter implements Filter {
                 chain.doFilter(request, response);
             }
         }
-
-
-
-
     }
 
     public void init(FilterConfig config) throws ServletException {

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd"
+>
+
+    <context:component-scan base-package="com.itdr">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+
+    <!--<bean id="users" class="com.itdr.pojo.Users" scope="prototype">-->
+        <!--<property name="uname" value="张小小"></property>-->
+        <!--<property name="age" value="18"></property>-->
+        <!--<property name="c" ref="car"></property>-->
+    <!--</bean>-->
+    <!--<bean name="car" class="com.itdr.pojo.Car">-->
+        <!--<property name="cname" value="吉利远景"></property>-->
+        <!--<property name="color" value="白色"></property>-->
+        <!--<property name="price" value="60000"></property>-->
+    <!--</bean>-->
+
+    <!--/////////////////////////////////////////////////-->
+    <!--数据库连接池-->
+    <bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/itdr11"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="123456"></property>
+    </bean>
+    <!--JDBC模板-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="driverManagerDataSource"></property>
+    </bean>
+    <!--数据层-->
+    <!--<bean id="indexDao" class="com.itdr.dao.IndexDao">-->
+        <!--<property name="jt" ref="jdbcTemplate"></property>-->
+    <!--</bean>-->
+    <!--切面-->
+    <bean id="aopDemo" class="com.itdr.config.AOPDemo"></bean>
+
+    <!--业务层-->
+    <!--<bean id="indexService" class="com.itdr.service.impl.IndexServiceImpl">-->
+        <!--<property name="indexDao" ref="indexDao"></property>-->
+        <!--<property name="tt" ref="transactionTemplate"></property>-->
+    <!--</bean>-->
+
+    <!--spring事务处理-->
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="driverManagerDataSource"></property>
+    </bean>
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="dataSourceTransactionManager"></property>
+    </bean>
+
+
+    <!--AOP配置-->
+    <aop:config>
+        <aop:pointcut id="update" expression="execution(* com.itdr.dao.IndexDao.update*(..))"></aop:pointcut>
+        <aop:aspect ref="aopDemo">
+            <aop:before method="a" pointcut-ref="update"></aop:before>
+        </aop:aspect>
+    </aop:config>
+</beans>

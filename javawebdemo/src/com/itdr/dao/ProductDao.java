@@ -49,7 +49,7 @@ public class ProductDao {
     public int updateById(int i) {
         QueryRunner qr = new QueryRunner(C3P0Util.getCom());
 
-        String sql = "update neuedu_product set type=1 where id=?";
+        String sql = "update neuedu_product set type=1,update_time=now() where id=?";
 
         int m = 0;
         try {
@@ -58,5 +58,47 @@ public class ProductDao {
             e.printStackTrace();
         }
         return m;
+    }
+
+    public List<Product> selectByPname(String key) {
+        QueryRunner qr = new QueryRunner(C3P0Util.getCom());
+
+        String sql = "select id,pname,price,pnum,type,create_time,update_time from neuedu_product where pname like ?";
+
+        List<Product> query = null;
+        try {
+            query = qr.query(sql, new BeanListHandler<Product>(Product.class),key);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return query;
+    }
+
+    public Product selectOneByPname(String pname) {
+        QueryRunner qr = new QueryRunner(C3P0Util.getCom());
+
+        String sql = "select id,pname,price,pnum,type,create_time,update_time from neuedu_product where pname = ?";
+
+        Product query = null;
+        try {
+            query = qr.query(sql, new BeanHandler<Product>(Product.class),pname);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return query;
+    }
+
+    public int insertOne(String pname, Double d, Integer m) {
+        QueryRunner qr = new QueryRunner(C3P0Util.getCom());
+
+        String sql = "insert into neuedu_product values(null,?,?,?,0,now(),now())";
+
+        int n = 0;
+        try {
+            n = qr.update(sql,pname,d,m);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return n;
     }
 }

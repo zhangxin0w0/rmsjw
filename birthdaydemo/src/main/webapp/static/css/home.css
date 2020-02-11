@@ -1,0 +1,107 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+ul{
+    list-style-type: none;
+    padding-left: 0;
+}
+.hz{
+    height: 1px;
+}
+
+/*======================*/
+#container{
+
+}
+/*左部分*/
+#left{
+    height: 100%;
+    width: 20%;
+    background-color: cornflowerblue;
+    position: fixed;
+    top: 0;
+}
+#left-top{
+    width: 100%;
+    height: 300px;
+    background-color: salmon;
+}
+#lt-img{
+    height: 100px;
+    width: 100px;
+    border: 1px solid springgreen;
+    border-radius: 50px;
+    margin: auto;
+    margin-top: 25px;
+}
+#lt-tx{
+    height: 100px;
+    width: 200px;
+    border: 1px solid springgreen;
+    margin: auto;
+    margin-top: 25px;
+}
+
+#left-bottom{
+    width: 100%;
+    height: 500px;
+    background-color: fuchsia;
+}
+#left-bottom ul{
+    width: 100%;
+}
+#left-bottom ul li{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    border: 1px solid springgreen;
+}
+#left-bottom ul li a{
+    display: block;
+}
+
+/*右部分*/
+#right{
+    margin-left: 20%;
+    width: 80%;
+    background-color: silver;
+}
+#right-text{
+    width: 100%;
+    height: 100px;
+}
+#right-content{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    background-color: white;
+    padding-top: 100px;
+}
+.rc-hz{
+    height: 250px;
+    width: 300px;
+    background-color: salmon;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.rc-hz div{
+    width: 100%;
+    color: springgreen;
+    font-size: 20px;
+    margin: auto;
+    margin-top: 30px;
+    border: 1px solid black;
+    text-align: center;
+}

@@ -6,34 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" errorPage="errorpage.jsp" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@include file="left.jsp"%>
 <html>
 <head>
     <title>商品列表</title>
-    <style>
-        #left {
-            width: 30%;
-            height: 100%;
-            float: left;
-            background-color: seagreen;
-        }
-
-        #right {
-            width: 70%;
-            float: right;
-            background-color: salmon;
-        }
-    </style>
 </head>
 <body>
-<div id="left">
-    <p>
-        <a href="/backed/index/home">回到首页</a>
-    </p>
-    <h1>欢迎${user.data.username}登录管理后台</h1>
-    <a href="/backed/product/getall">获取所有商品数据</a>
-</div>
 <div id="right">
+    <form action="/backed/product/fuzzysearch">
+        <input type="text" placeholder="查询的商品名称" name="key">
+        <input type="submit" value="查询">
+    </form>
+
     <c:if test="${not empty plist.data}">
         <table>
             <tr>
@@ -46,7 +32,7 @@
                 <th>商品更新时间</th>
             </tr>
 
-            <c:forEach items="${plist.data}" var="p" >
+            <c:forEach items="${plist.data}" var="p">
                 <tr>
                     <td>${p.id}</td>
                     <td>${p.pname}</td>
@@ -75,14 +61,27 @@
         var id2 = $(but).parent().parent().children().first().text();
         $.get(
             "/backed/product/totype",
-            {id:id2},
+            {id: id2},
             function (data) {
-                var num = Number(data);
-                if(data>0){
+                if(data.data>0){
                     $(but).parent().parent().children().first().nextAll(".pt").text(1);
                 }
+            },"json"
+        );
+
+       /* $.ajax({
+            type: "get",
+            url: "/backed/product/totype",
+            data: {id: id2},
+            dataType:"json",
+            success: function (data) {
+                alert(data.data)
+                // var num = Number(data);
+                // if(data>0){
+                //     $(but).parent().parent().children().first().nextAll(".pt").text(1);
+                // }
             }
-        )
+        })*/
     }
 </script>
 </html>
